@@ -6,11 +6,13 @@ import {
   InputGroup,
   FormControl,
   Button,
-  Alert
+  Alert,
+  Table
 } from "react-bootstrap";
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, doc, addDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, addDoc, deleteDoc  } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollection } from "react-firebase-hooks/firestore";
 import fireApp from "../fire";
 import { useNavigate } from "react-router-dom";
 
@@ -20,8 +22,15 @@ const auth = getAuth();
 const WallFeed = () => {
   const [desc, setDesc] = useState("");
   const [alert, setAlert] = useState(false);
+  const feedRef = collection(db, "posts");
+  const [feeds] = useCollection(feedRef);
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+
+  const deletePost = async (id) => {
+    await deleteDoc(doc(db, "posts", id));
+  };
+
   const submitPost = async () => {
     await addDoc(collection(db, "posts"), {
       userId: user.uid,
@@ -82,6 +91,37 @@ const WallFeed = () => {
               Feed added successfully
             </Alert>}
           </Col>
+          <Row>
+            <Col>
+            <Table striped bordered hover style={{ textAlign: "center" }}>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Feed</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {feeds &&
+                  feeds.docs.map((doc, index) => {
+                   const feed = doc.data()
+                    return <tr id={index}>
+                      <td>{feed.name}</td>
+                      <td>{feed.post}</td>
+                      <td>
+                          <Button
+                          onClick={() => {deletePost(doc.id)}}
+                          variant="secondary"
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>;
+                  })}
+              </tbody>
+            </Table>
+            </Col>
+          </Row>
         </Row>
       </div>
     </Container>

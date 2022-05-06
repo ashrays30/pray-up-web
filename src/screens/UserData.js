@@ -80,15 +80,30 @@ const UserData = () => {
                       <td>{user.phone}</td>
                       <td>{user.type}</td>
                       <td>
-                        <Button
+                        {(user.type === "Volunteer") ? 
+                          <Button
+                          onClick={() => setUserType(user.uid, "User")}
+                          variant="secondary"
+                        >
+                          Make User
+                        </Button>
+                        :<Button
                           onClick={() => setUserType(user.uid, "Volunteer")}
                           variant="success"
-                          disabled={user.type === "Volunteer"}
                         >
                           Make Volunteer
-                        </Button>
+                        </Button>}
+
                         {` `}
-                        <Button
+
+                        {(user.type === "Chapter Leader") ? 
+                          <Button
+                          onClick={() => setUserType(user.uid, "User")}
+                          variant="secondary"
+                        >
+                          Make User
+                        </Button>
+                        :<Button
                           onClick={() =>
                             setUserType(user.uid, "Chapter Leader")
                           }
@@ -96,7 +111,7 @@ const UserData = () => {
                           disabled={user.type === "Chapter Leader"}
                         >
                           Make Chapter Leader
-                        </Button>
+                        </Button>}
                       </td>
                     </tr>;
                   })}
