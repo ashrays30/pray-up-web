@@ -36,8 +36,18 @@ const UserData = () => {
       <div>
         <br />
         <Row>
-          <Col sm={10}>
+          <Col sm={8}>
             <h1>User Data</h1>
+          </Col>
+          <Col sm={2}>
+            <Button
+              onClick={() => {
+                navigate(`/wallfeed`);
+              }}
+              variant="outline-dark"
+            >
+              Add Wall Feed
+            </Button>
           </Col>
           <Col sm={2}>
             <Button
