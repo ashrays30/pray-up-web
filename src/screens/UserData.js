@@ -29,6 +29,7 @@ const UserData = () => {
       console.log("Transaction successfully committed!");
     } catch (e) {
       console.log("Transaction failed: ", e);
+      console.log("some error occured");
     }
   };
   return (
